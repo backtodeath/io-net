@@ -72,9 +72,10 @@ vmdir=$homedir/$vmname
 cd $homedir
 image=focal-server-cloudimg-amd64.img
 echo "Update and upgrade packages..."
-sudo apt-get update -y && sudo apt-get upgrade -y
+sudo apt-get update -y
+sudo apt-get -y -o Dpkg::Options::="--force-confold" upgrade
 echo "Installing KVM, Docker, and related packages..."
-sudo apt-get install -y qemu-kvm libvirt-daemon-system virt-manager bridge-utils cloud-image-utils docker.io
+sudo apt-get install -y -o Dpkg::Options::="--force-confold" qemu-kvm libvirt-daemon-system virt-manager bridge-utils cloud-image-utils docker.io
 sudo usermod -aG kvm $USER
 sudo usermod -aG libvirt $USER
 sudo usermod -aG docker $USER
