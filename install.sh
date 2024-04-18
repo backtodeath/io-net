@@ -71,6 +71,13 @@ basedir=$homedir/base
 vmdir=$homedir/$vmname
 cd $homedir
 image=focal-server-cloudimg-amd64.img
+
+# Install debconf-utils to use debconf-set-selections
+sudo apt-get install -y debconf-utils
+
+# Explicitly accept current version of the sshd_config to avoid prompts
+echo "openssh-server openssh-server/sshd_config keep_current boolean true" | sudo debconf-set-selections
+
 echo "Update and upgrade packages..."
 sudo apt-get update -y
 sudo apt-get -y -o Dpkg::Options::="--force-confold" upgrade
