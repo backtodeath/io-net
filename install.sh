@@ -20,39 +20,17 @@ ssd="48G"
 IP_ADDR="192.168.122.10"
 launch="./launch_binary_linux --device_id=your_device_id --user_id=your_user_id --operating_system=Linux --usegpus=false --device_name=your_device_name"
 
-# Function to select CPU type
+# Function to select CPU type (now non-interactive)
 select_cpu_type() {
     echo "Select hosting where you rent VPS:"
-    echo "1. Digital Ocean AMD Premium"
-    echo "2. AZURE D2as_v5 or D4as_v5"
-    echo "3. AZURE D2s_v5 or D4s_v5"
-    echo "4. Google cloud N1, Kamatera"
-    echo "5. Enter custom CPU type"
-
-    read -p "Enter option number: " choice
-
-    case $choice in
-        1) cpu_type="qemu64" ;;
-        2) cpu_type="qemu64,-ibpb" ;;
-        3) cpu_type="qemu64,-svm,-spec-ctrl,-ssbd" ;;
-        4) cpu_type="qemu64,-svm" ;;
-        5) 
-            read -p "Enter your custom CPU type: " custom_cpu_type
-            cpu_type="$custom_cpu_type"
-            ;;
-        *) 
-            echo "Setting CPU type to default: qemu64."
-            cpu_type="qemu64"
-            ;;
-    esac
+    echo "1. Digital Ocean AMD Premium (pre-selected)"
+    cpu_type="qemu64"
 }
 
-# Function to select other variables
+# Function to set other variables non-interactively
 select_variables() {
-    read -p "Enter your Docker Command (default: $launch): " launch_input
-    launch="${launch_input:-$launch}"
-    read -p "Enter virtual host name (default: $vmhost): " vmhost_input
-    vmhost="${vmhost_input:-$vmhost}"
+    launch="./launch_binary_linux --device_id=$UUID --user_id=820a59c2-8728-4571-9ab6-57a74daa33f2 --operating_system=\"Linux\" --usegpus=false --device_name=$VM_HOST"
+    vmhost=$VM_HOST
 }
 
 select_cpu_type
