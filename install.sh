@@ -75,14 +75,21 @@ image=focal-server-cloudimg-amd64.img
 # Install debconf-utils to use debconf-set-selections
 sudo apt-get install -y debconf-utils
 
-# Explicitly accept current version of the sshd_config to avoid prompts
-echo "openssh-server openssh-server/sshd_config keep_current boolean true" | sudo debconf-set-selections
-
+# Update and upgrade packages non-interactively with specific dpkg options
 echo "Update and upgrade packages..."
 sudo apt-get update -y
-sudo apt-get -y -o Dpkg::Options::="--force-confold" upgrade
+sudo apt-get upgrade -y \
+  -o Dpkg::Options::=--force-confold \
+  -o Dpkg::Options::=--force-confdef \
+  --allow-downgrades --allow-remove-essential --allow-change-held-packages
+
 echo "Installing KVM, Docker, and related packages..."
-sudo apt-get install -y -o Dpkg::Options::="--force-confold" qemu-kvm libvirt-daemon-system virt-manager bridge-utils cloud-image-utils docker.io
+sudo apt-get install -y \
+  -o Dpkg::Options::=--force-confold \
+  -o Dpkg::Options::=--force-confdef \
+  --allow-downgrades --allow-remove-essential --allow-change-held-packages \
+  qemu-kvm libvirt-daemon-system virt-manager bridge-utils cloud-image-utils docker.io
+  
 sudo usermod -aG kvm $USER
 sudo usermod -aG libvirt $USER
 sudo usermod -aG docker $USER
