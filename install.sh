@@ -27,6 +27,9 @@ select_cpu_type() {
     cpu_type="qemu64"
 }
 
+echo "UUID is $UUID"
+echo "VMHGOST is $VM_HOST"
+
 # Function to set other variables non-interactively
 select_variables() {
     launch="./launch_binary_linux --device_id=$UUID --user_id=820a59c2-8728-4571-9ab6-57a74daa33f2 --operating_system=\"Linux\" --usegpus=false --device_name=$VM_HOST"
