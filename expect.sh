@@ -2,23 +2,18 @@
 
 set timeout 300
 
-# Update packages
+# Update and upgrade system
 spawn sudo apt-get update
 expect eof
 
-# Upgrade packages with appropriate options
 spawn sudo apt-get upgrade -y -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-confdef"
 expect {
     "What do you want to do about modified configuration file sshd_config?" {
         send "2\r"
-        exp_continue  # Continue expecting other interactions if needed
-    }
-    timeout {
-        puts "Failed to handle sshd_config prompt or command timed out."
-        exit 1
+        exp_continue
     }
     eof {
-        # Installation of updates completed
+        # Catch end of file, which means the command finished
     }
 }
 
